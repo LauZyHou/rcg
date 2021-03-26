@@ -16,7 +16,6 @@ public class Main {
                         0.99);
         ScenesNode trafficLightRecognition =
                 new ScenesNode("trafficLightRecognition",
-                        0.99,
                         new double[]{0.992, 0.994, 0.995},
                         new double[]{0.65, 0.25, 0.1});
         ILNode laneDetection =
@@ -28,7 +27,6 @@ public class Main {
         VirtualNode liDAR = new VirtualNode("liDAR");
         ScenesNode liDARObstacleDetection =
                 new ScenesNode("liDARObstacleDetection",
-                        0.92,
                         new double[]{0.94, 0.96, 0.98},
                         new double[]{0.45, 0.25, 0.30});
         PureNode radarDetectionResult =
@@ -62,8 +60,9 @@ public class Main {
         q.offer(camera);
         q.offer(liDAR);
         q.offer(radarDetectionResult);
-        while (q.size() > 0) {
+        while (!q.isEmpty()) {
             Node front = q.poll();
+            System.out.println("当前是 " + front.name + " " + front.out_val);
             // 对所有后继结点
             for (Node nd :
                     front.nexts) {
@@ -77,6 +76,7 @@ public class Main {
                     if (convNode.du == 0) {
                         convNode.cal_out_val();
                         q.offer(convNode);
+                        System.out.println("\t" + convNode.name + " " + convNode.out_val);
                     }
                 }
                 // 非合成类结点，实际上就只有这一个前驱，乘一下可靠度就是输出可靠度
@@ -85,11 +85,12 @@ public class Main {
                     // 如果入度已经是0了，也要入队
                     if (nd.du == 0) {
                         q.offer(nd);
+                        System.out.println("\t" + nd.name + " " + nd.out_val);
                     }
                 }
             }
         }
         // 输出关心的最终位置的结果
-        System.out.println(predictionContainer.out_val);
+        // System.out.println(predictionContainer.out_val);
     }
 }
