@@ -9,6 +9,6 @@ public class ScenesNode extends Node {
         for (int i = 0; i < k; i ++ ) {
             sum += s[i] * q[i];
         }
-        out_val = p * sum; // 乘以判别器概率即为输出概率
+        self_val = out_val = p * sum; // 乘以判别器概率即为输出概率
     }
 }
